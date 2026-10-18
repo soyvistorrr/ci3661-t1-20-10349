@@ -52,17 +52,41 @@ esPalindromo cadena = limpia == miReversa limpia
 
 -- A2
 -- Explica aquí, en dos o tres líneas, por qué tu solución recorre la
--- lista una sola vez:
+-- lista una sola vez: La funcion implementada toma el primer elemento, en este caso x,
+-- le pide a la recursion que le traiga de un solo golpe el mayor y el menor de todo
+-- el resto de la lista(xs), para luego simplemente comparar x con esos dos valores al mismo tiempo
 --
 mayorYMenor :: Ord a => [a] -> Maybe (a, a)
+
 mayorYMenor [] = Nothing
+mayorYMenor [x] = Just (x,x)
+mayorYMenor (x:xs) = 
+  let Just (may,men) = mayorYMenor xs
+  in Just (max x may, min x men)
 
 -- A3
 leerHora :: String -> Either String (Int, Int)
-leerHora = undefined
+leerHora [a, b, ':', c, d]
+  | isDigit a && isDigit b && isDigit c && isDigit d =
+      let h = (digitToInt a * 10) + digitToInt b 
+          m = (digitToInt c * 10) + digitToInt d
+      in if h > 23 then Left "hora fuera de rango"
+         else if m > 59  then Left "minutos fuera de rango"
+         else Right (h,m)
+      leerHora _ = Left "formato inválido"
 
 duracion :: String -> String -> Either String Int
-duracion = undefined
+duracion t1 t2  = case leeHora t1 of
+  Left err -> Left err
+  Right (h1, m1) -> case leerHora t2 of
+    Left err -> Left err
+    Right (h2, m2) -> 
+      let total1 = (h1 * 60) + m1
+          total2 = (h2 * 60) + m2
+          resta = total2 - total1
+      in if resta < 0
+        then Right (resta + 1440)
+        else Right resta
 
 -- =====================================================================
 -- Parte B: orden superior.
