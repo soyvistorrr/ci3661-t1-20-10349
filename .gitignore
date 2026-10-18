@@ -1,0 +1,13 @@
+# GHC / Haskell build artifacts
+*.o
+*.hi
+*.dyn_o
+*.dyn_hi
+*.exe
+
+# Stack
+.stack-work/
+
+# Windows
+Thumbs.db
+Desktop.ini
