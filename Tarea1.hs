@@ -73,10 +73,10 @@ leerHora [a, b, ':', c, d]
       in if h > 23 then Left "hora fuera de rango"
          else if m > 59  then Left "minutos fuera de rango"
          else Right (h,m)
-      leerHora _ = Left "formato inválido"
+leerHora _ = Left "formato inválido"
 
 duracion :: String -> String -> Either String Int
-duracion t1 t2  = case leeHora t1 of
+duracion t1 t2  = case leerHora t1 of
   Left err -> Left err
   Right (h1, m1) -> case leerHora t2 of
     Left err -> Left err
@@ -96,14 +96,21 @@ duracion t1 t2  = case leeHora t1 of
 
 -- B1
 promedioSobreUmbral :: Double -> [Double] -> Maybe Double
-promedioSobreUmbral = undefined
+promedioSobreUmbral umbral xs =
+  let (totalSuma, totalCantidad) = foldr (\x (suma, cantidad) -> if x > umbral then (suma + x, cantidad + 1) else (suma, cantidad)) (0,0) xs
+  in if totalCantidad == 0 then Nothing
+     else Just (totalSuma / totalCantidad)
 
 -- B2
 movimientosCaballo :: (Int, Int) -> [(Int, Int)]
-movimientosCaballo = undefined
+movimientosCaballo (f, c) =
+  [(f + df, c + dc) | (df, dc) <- [(-2,-1),(-2,1),(-1,-2),(-1,2),(1,-2),(1,2),(2,-1),(2,1)]
+                    , f + df >= 1 && f + df <= 8
+                    , c + dc >= 1 && c + dc <= 8]
 
 enDosSaltos :: (Int, Int) -> Int
-enDosSaltos = undefined
+enDosSaltos inicial = length (foldr (\x acc -> if elem x acc then acc else x : acc) [] todosLosSaltos)
+  where todosLosSaltos = [ c2 | c1 <- movimientosCaballo inicial, c2 <- movimientosCaballo c1 ]
 
 -- B3
 miMap :: (a -> b) -> [a] -> [b]
