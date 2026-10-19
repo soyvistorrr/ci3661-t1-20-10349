@@ -114,10 +114,10 @@ enDosSaltos inicial = length (foldr (\x acc -> if elem x acc then acc else x : a
 
 -- B3
 miMap :: (a -> b) -> [a] -> [b]
-miMap = undefined
+miMap f xs = foldr (\x acc -> f x : acc) [] xs
 
 miFilter :: (a -> Bool) -> [a] -> [a]
-miFilter = undefined
+miFilter p xs = foldr (\x acc -> if p x then x : acc else acc) [] xs
 
 miFoldl :: (b -> a -> b) -> b -> [a] -> b
-miFoldl = undefined
+miFoldl f z xs = foldr (\x g -> (\v -> g (f v x))) (\v -> v) xs z
