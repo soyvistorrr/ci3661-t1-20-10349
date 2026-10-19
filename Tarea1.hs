@@ -59,10 +59,10 @@ esPalindromo cadena = limpia == miReversa limpia
 mayorYMenor :: Ord a => [a] -> Maybe (a, a)
 
 mayorYMenor [] = Nothing
-mayorYMenor [x] = Just (x,x)
-mayorYMenor (x:xs) = 
-  let Just (may,men) = mayorYMenor xs
-  in Just (max x may, min x men)
+mayorYMenor (x:xs) = Just (aux xs x x)
+  where
+    aux [] may men = (may, men)
+    aux (y:ys) may men = aux ys (max y may) (min y men)
 
 -- A3
 leerHora :: String -> Either String (Int, Int)

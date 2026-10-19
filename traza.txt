@@ -1,0 +1,53 @@
+Problema 7. Evaluación por sustitución, con tu carnet (2.5 pts)
+Sea d la lista con los cuatro últimos dígitos de tu carnet , en orden. Por ejemplo, para el carnet
+19-10437, d = [0, 4, 3, 7]. Escribe a mano o en texto plano, paso a paso como en la clase 3, 
+la reducción de:
+(a) foldr (-) 0 d hasta llegar a un número.(0.5 pts)
+(b) foldl (-) 0 d hasta llegar a un número.(0.5 pts)
+(c) Con tu definición demiFoldl, la reducción demiFoldl (-) 0 [d1, d2], donde d1 y d2 son los dos
+primeros dígitos de d. Cada paso debe corresponder a una ecuación de tu código o a una regla de
+β-reducción. (0.75 pts)
+(d) Explica en un párrafo por qué (a) y (b) dan distinto, y da una condición sobre el operador op y
+el valor z que garantice que foldr op z xs == foldl op z xs para toda lista finita xs. (0.75 pts)
+Una traza con un carnet que no es el tuyo vale cero.
+
+Respuesta:
+
+En nuestro caso, como mi carnet es 20-10349 d seria igual a d=[0, 3, 4, 9]
+
+(a) 1er Paso: 0 - (foldr (-) 0 [3, 4, 9])
+    2do Paso: 0 - (3 - (foldr (-) 0 [4, 9]))
+    3er Paso: 0 - (3 - (4 -(foldr (-) 0 [9])))
+    4to Paso: 0 - (3 - (4 -(9- foldr (-) 0 [])))
+    5to Paso: 0 - (3 - (4 - (9 - 0)))
+    6to Paso: 0 - (3 - (4-9)) 
+    7mo Paso: 0 - (3 - (-5))
+    8vo Paso: 0 - (3+5)
+    9no Paso: -8
+
+(b) 1er Paso: foldl (-) 0 [0, 3, 4, 9]
+    2do Paso: foldl (-) (0 - 0) [3, 4, 9]
+    3er Paso: foldl (-) ((0 - 0) - 3) [4, 9]
+    4to Paso: foldl (-) (((0 - 0) - 3) - 4) [9]
+    5to Paso: foldl (-) ((((0 - 0) - 3) - 4) - 9) []
+    6to Paso: (((0 - 0) - 3) - 4 ) - 9
+    7mo Paso: ((0 - 3) - 4 ) - 9
+    8vo Paso: (- 3 - 4 ) - 9
+    9no Paso: (- 7 ) - 9
+    10mo Paso: -16
+
+(c) miFoldl (-) 0 [0, 3]
+    1er paso: foldr (\x g -> (\v -> g (v - x))) (\v -> v) [0, 3] 0
+    2do Paso: (\v -> (foldr (\x g -> (\v -> g (v - x))) (\v -> v) [3]) (v - 0)) 0
+    3er Paso: (foldr (\x g -> (\v -> g (v - x))) (\v -> v) [3]) (0 - 0)
+    4to Paso: foldr (\x g -> (\v -> g (v - x))) (\v -> v) [3] (0 - 0)
+    5to Paso: (\v -> (foldr  (\x g -> (\v -> g (v - x))) (\v -> v) []) (v - 3)) (0 - 0)
+    6to Paso: (0 - 0) - 3
+    7mo Paso: -3
+
+(d) Las partes (a) y (b) dan resultados distintos porque el operador utilizado (la resta) 
+no posee la propiedad de asociatividad. Como foldr agrupa las operaciones hacia la derecha 
+y foldl hacia la izquierda, la falta de asociatividad hace que el orden de los paréntesis 
+altere el resultado final. Para garantizar que foldr op z xs == foldl op z xs para cualquier 
+lista finita, el operador op debe ser asociativo y el valor inicial z debe ser el elemento 
+neutro de dicho operador (por ejemplo, la suma con neutro 0, o la multiplicación con neutro 1).

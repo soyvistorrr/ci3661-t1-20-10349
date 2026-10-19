@@ -2,7 +2,7 @@
 
 - **Estudiante:** Víctor Hernández
 - **Carnet:** 20-10349
-- **Profesor:** Leonardo López Almazán
+- **Profesor:** Leonardo López
 - **Trimestre:** Septiembre – Diciembre 2026
 
 ## Contenido del Repositorio
